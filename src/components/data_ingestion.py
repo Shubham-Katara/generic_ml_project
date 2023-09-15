@@ -14,6 +14,7 @@ from src.components.model_trainer import ModelTrainer
 
 @dataclass   # using this, we can define class variables directly.
 class DataIngestionConfig:
+    # this class creates paths to save files.
     train_data_path: str=os.path.join("artifacts","train.csv")  # all files will be saved in this path
     test_data_path: str=os.path.join("artifacts","test.csv")
     raw_data_path: str=os.path.join("artifacts","data.csv")
@@ -23,7 +24,8 @@ class DataIngestion:
         self.ingestion_config=DataIngestionConfig()
     
     def initiate_data_ingestion(self):
-        # here we write code to from databases, if any database is there.
+        # here we write code to form databases, if any database is there.
+        # returns: train and test data paths.
         logging.info("Entered the data ingestion method")
         try:
             df = pd.read_csv(r'C:\Shubham\generic_ml_project\notebook\data\stud.csv')

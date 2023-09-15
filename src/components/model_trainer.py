@@ -3,12 +3,11 @@ import sys
 from dataclasses import dataclass
 
 from catboost import CatBoostRegressor
-from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
     GradientBoostingRegressor,
     RandomForestRegressor,
-)
+)   
 
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
@@ -18,7 +17,6 @@ from xgboost import XGBRegressor
 
 from src.exception import CustomException
 from src.logger import logging
-
 from src.utils import save_object,evaluate_models
 
 @dataclass

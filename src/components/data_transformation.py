@@ -16,7 +16,7 @@ import os
 
 @dataclass
 class DataTransformationConfig:
-    # it will provide any imputs that are required for any data transformation
+    # it will provide any inputs that are required for any data transformation
     # to save our model into a pickle file, creating a path
     preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
 
@@ -28,6 +28,7 @@ class DataTransformation:
         '''
         it is just to create all my pickle files that will be resposible for converting categorical features into numerical,
         and other things.
+        returns an object which can be used to transform(preprocessing) the data.
         '''
         try:
             numerical_columns = ["writing_score","reading_score"]
@@ -74,7 +75,10 @@ class DataTransformation:
             raise CustomException(e,sys)
         
     def initiate_data_transformation(self,train_path,test_path):
-
+        '''
+        returns train_arr and test_arr which contains transformed values of train_df and test_df,
+        and path for pickle file which stored the preprocessing object.
+        '''
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
@@ -88,16 +92,19 @@ class DataTransformation:
             target_column_name="math_score"
             numerical_columns = ["writing_score","reading_score"]
 
+            # dataframes that contain input and target features
+            # in train data
             input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df=train_df[target_column_name]
-
+            # in test data
             input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df=test_df[target_column_name]
 
             logging.info(
                 f"Applying preprocessing object on training and testing dataframe."
             )
-
+            
+            # after data transformation, the transformed values which will be received will be stored in an array.
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.fit_transform(input_feature_test_df)
 
@@ -106,6 +113,7 @@ class DataTransformation:
 
             logging.info(f"Saved preprocessing object.")
 
+            # will save the prerocessing object into pickle file.
             save_object(
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj
